@@ -2,7 +2,6 @@ package hillel;
 
 import DemoqaPages.DemoqaBrowserWindowsPage;
 import DemoqaPages.DemoqaSamplePage;
-import Supporting.TabActions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -15,7 +14,6 @@ public class DemoqaTest extends UIBaseTest{
     DemoqaBrowserWindowsPage demoqaBrowserWindowsPage;
     DemoqaSamplePage demoqaSamplePage;
     DemoqaSamplePage demoqaSamplePageSecond;
-    //TabActions tabActions;
 
     @Test
     public void switchingBetweenTabs(){

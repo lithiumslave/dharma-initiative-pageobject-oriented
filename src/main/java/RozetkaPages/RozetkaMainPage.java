@@ -1,37 +1,36 @@
 package RozetkaPages;
 
+import Supporting.BasePage;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-public class RozetkaMainPage {
+public class RozetkaMainPage extends BasePage {
 
-    WebDriver driver;
-
-    @FindBy(xpath="//input[@name='search']")
-    private WebElement searchField;
-
-    @FindBy(css=".button.button_color_green")
-    private WebElement searchButton;
+    RozetkaMainPageLeftMenuFragment leftMenuFragment;
+    TopPanelFragment topPanelFragment;
 
     public RozetkaMainPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
+        super(driver);
+        leftMenuFragment = new RozetkaMainPageLeftMenuFragment(driver);
+        topPanelFragment = new TopPanelFragment(driver);
     }
 
-    public RozetkaProductsPage performSearch(String searchText) {
-        enterTextIntoSearchField(searchText);
-        clickSearchButton();
-        return new RozetkaProductsPage(driver);
+    public void clickOnGamingMenuItem() {
+        leftMenuFragment.getGamingGoods().click();
     }
 
-    private void enterTextIntoSearchField(String searchText) {
-        searchField.sendKeys(searchText);
+    public void clickLoyaltyItem() {
+        leftMenuFragment.getLoyaltyField().click();
     }
 
-    private void clickSearchButton() {
-        searchButton.click();
+    public RozetkaComputersNotebooksPage clickComputerAndNotebooks() {
+        leftMenuFragment.getComputersAndNotebooks().click();
+        waitForJsToLoad();
+        return new RozetkaComputersNotebooksPage(driver);
     }
+
+    public TopPanelFragment getTopPanelFragment() {
+        return topPanelFragment;
+    }
+    public RozetkaMainPageLeftMenuFragment getLeftMenuFragment() { return leftMenuFragment; }
 }
 
