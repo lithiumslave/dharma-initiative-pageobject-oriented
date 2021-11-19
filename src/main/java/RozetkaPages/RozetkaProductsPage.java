@@ -107,7 +107,7 @@ public class RozetkaProductsPage extends BasePage {
     public boolean checkAllProductsOnPageAreInExpectedPriceRange(String expectedMin, String expectedMax) throws InterruptedException {
         int expectedMinInt = Integer.parseInt(expectedMin);
         int expectedMaxInt = Integer.parseInt(expectedMax);
-        boolean result = false;
+        boolean result = true;
 
         // wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".catalog-grid > li:last-of-type")));
         //wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[contains(text(), \"5000 - 15000\")]")));
@@ -121,9 +121,7 @@ public class RozetkaProductsPage extends BasePage {
             String priceInString = prices.getText();
             int value = Integer.parseInt(priceInString.replaceAll("[^0-9]", ""));
 
-            if (value >= expectedMinInt && value <= expectedMaxInt) {
-                result = true;
-            } else {
+            if (value <= expectedMinInt || value >= expectedMaxInt) {
                 result = false;
                 break;
             }

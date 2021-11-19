@@ -51,7 +51,7 @@ public class GoogleSearchResultPage extends BasePage {
                 System.out.println(link.getText());
                 if (link.getText().contains(expectedSite)) {
                     System.out.println(expectedSite.toUpperCase() + " was found on " + i + " page");
-                    result = true;
+                    result = true;п
                 }
             }
             if (i == 5) {
