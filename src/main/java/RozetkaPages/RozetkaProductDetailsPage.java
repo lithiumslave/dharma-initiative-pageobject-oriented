@@ -1,18 +1,22 @@
 package RozetkaPages;
 
+import Supporting.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import java.util.List;
-
-public class RozetkaProductDetailsPage {
-
-    WebDriver driver;
+public class RozetkaProductDetailsPage extends BasePage {
+    private TopPanelFragment topPanelFragment;
 
     @FindBy(css="h1.product__title")
     private WebElement selectedProductTitle;
+
+    @FindBy(css = "p.product-prices__big")
+    private WebElement selectedProductPrice;
+
+    @FindBy(css = "button.compare-button")
+    private WebElement compareButton;
 
     @FindBy(css="span.buy-button__label")
     private WebElement buyButton;
@@ -20,33 +24,25 @@ public class RozetkaProductDetailsPage {
     @FindBy(css="button.modal__close")
     private WebElement closeModalWindowButton;
 
-    @FindBy(css="span.counter")
-    private WebElement cartCounter;
-
-    @FindBy(css="span.counter")
-    private List<WebElement> cartCounterCollection;
-
-
     public RozetkaProductDetailsPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
+        super(driver);
+        topPanelFragment = new TopPanelFragment(driver);
+    }
+
+    public void clickOnCompareButton() throws InterruptedException {
+        wait.until(ExpectedConditions.elementToBeClickable(compareButton)).click();
+        Thread.sleep(1000);
     }
 
     public String getProductTitleText() {
         return selectedProductTitle.getText();
     }
 
+    public String getProductPrice() { return selectedProductPrice.getText().replaceAll("[^0-9]", ""); }
+
     public void addProductToCart() {
         clickBuyButton();
         closeModalWindow();
-    }
-
-    public boolean isCartEmpty() {
-        return cartCounterCollection.isEmpty();
-    }
-
-    public String getCartLabelText() {
-        return cartCounter.getText();
     }
 
     private void clickBuyButton() {
@@ -57,4 +53,7 @@ public class RozetkaProductDetailsPage {
         closeModalWindowButton.click();
     }
 
+    public TopPanelFragment getTopPanelFragment() {
+        return topPanelFragment;
+    }
 }
