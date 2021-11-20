@@ -1,4 +1,4 @@
-package hillel;
+package hillel.Selenide;
 
 import com.codeborne.selenide.Configuration;
 import org.openqa.selenium.By;
