@@ -49,7 +49,7 @@ public class PetStoreTest {
                 .post()
                 .then()
                 .statusCode(200)
-                .and().assertThat()
+                .and().assertThat();
                 /*.body("id", equalTo(petId))
                 .body("name", equalTo("hillel_new_pet"));*/
 
