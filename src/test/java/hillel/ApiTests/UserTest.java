@@ -25,32 +25,6 @@ public class UserTest {
     Faker faker = new Faker();
     UserController userController = new UserController();
 
-    /*@Test
-    public void createUser() {
-
-        long id = faker.number().randomNumber();
-        String username = faker.name().username();
-        String firstName = faker.name().firstName();
-        String lastName = faker.name().lastName();
-        String email = faker.internet().emailAddress();
-        String password = faker.internet().password();
-        String phone = faker.phoneNumber().phoneNumber();
-        long userStatus = faker.number().randomNumber();
-
-        UserModel userTarget = new UserModel(id, username, firstName, lastName, email, password, phone, userStatus);
-
-        Response actualUserResponse = RestAssured.given()
-                .baseUri("https://petstore.swagger.io/v2")
-                .basePath("/user")
-                .contentType(ContentType.JSON)
-                .when()
-                .body(userTarget)
-                .post();
-
-        Assert.assertEquals(actualUserResponse.getStatusCode(), 200);
-        Assert.assertEquals(actualUserResponse.then().extract().jsonPath().getLong("message"), id);
-    }*/
-
     @Test
     public void createUser() {
 
@@ -105,6 +79,9 @@ public class UserTest {
 
         Response actualAddedUserResponse = userController.getUser(targetUsername);
         Assert.assertEquals(actualAddedUserResponse.getStatusCode(), 200);
+
+        UserModel actualAddedUser = actualAddedUserResponse.as(UserModel.class);
+        Assert.assertEquals(actualAddedUser, targetUser);
     }
 
     @Test
