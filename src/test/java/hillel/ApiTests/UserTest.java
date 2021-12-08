@@ -3,11 +3,9 @@ package hillel.ApiTests;
 import be.models.controllers.UserController;
 import be.models.models.UserModel;
 import com.github.javafaker.Faker;
-import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.LogDetail;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -28,56 +26,24 @@ public class UserTest {
     @Test
     public void createUser() {
 
-        long targetId = faker.number().randomNumber();
-        String targetUsername = faker.name().username();
-        String targetFirstName = faker.name().firstName();
-        String targetLastName = faker.name().lastName();
-        String targetEmail = faker.internet().emailAddress();
-        String targetPassword = faker.internet().password();
-        String targetPhone = faker.phoneNumber().phoneNumber();
-        long targetUserStatus = faker.number().randomNumber();
-
-        UserModel targetUser = UserModel.builder()
-                .id(targetId)
-                .username(targetUsername)
-                .firstName(targetFirstName)
-                .lastName(targetLastName)
-                .email(targetEmail)
-                .password(targetPassword)
-                .phone(targetPhone)
-                .userStatus(targetUserStatus).build();
+        UserModel targetUser = createRandomUser();
 
         Response createdUserResponse = userController.addUser(targetUser);
+
         Assert.assertEquals(createdUserResponse.getStatusCode(), 200);
 
-        Assert.assertEquals(createdUserResponse.then().extract().jsonPath().getLong("message"), targetId);
+        Assert.assertEquals(createdUserResponse.then().extract().jsonPath().getLong("message"), targetUser.getId());
     }
 
     @Test
     public void getUser() {
-        long targetId = faker.number().randomNumber();
-        String targetUsername = faker.name().username();
-        String targetFirstName = faker.name().firstName();
-        String targetLastName = faker.name().lastName();
-        String targetEmail = faker.internet().emailAddress();
-        String targetPassword = faker.internet().password();
-        String targetPhone = faker.phoneNumber().phoneNumber();
-        long targetUserStatus = faker.number().randomNumber();
 
-        UserModel targetUser = UserModel.builder()
-                .id(targetId)
-                .username(targetUsername)
-                .firstName(targetFirstName)
-                .lastName(targetLastName)
-                .email(targetEmail)
-                .password(targetPassword)
-                .phone(targetPhone)
-                .userStatus(targetUserStatus).build();
+        UserModel targetUser = createRandomUser();
 
         Response createdUserResponse = userController.addUser(targetUser);
         Assert.assertEquals(createdUserResponse.getStatusCode(), 200);
 
-        Response actualAddedUserResponse = userController.getUser(targetUsername);
+        Response actualAddedUserResponse = userController.getUser(targetUser.getUsername());
         Assert.assertEquals(actualAddedUserResponse.getStatusCode(), 200);
 
         UserModel actualAddedUser = actualAddedUserResponse.as(UserModel.class);
@@ -86,24 +52,8 @@ public class UserTest {
 
     @Test
     public void updateAddedUser() {
-        long targetId = faker.number().randomNumber();
-        String targetUsername = faker.name().username();
-        String targetFirstName = faker.name().firstName();
-        String targetLastName = faker.name().lastName();
-        String targetEmail = faker.internet().emailAddress();
-        String targetPassword = faker.internet().password();
-        String targetPhone = faker.phoneNumber().phoneNumber();
-        long targetUserStatus = faker.number().randomNumber();
 
-        UserModel targetUser = UserModel.builder()
-                .id(targetId)
-                .username(targetUsername)
-                .firstName(targetFirstName)
-                .lastName(targetLastName)
-                .email(targetEmail)
-                .password(targetPassword)
-                .phone(targetPhone)
-                .userStatus(targetUserStatus).build();
+        UserModel targetUser = createRandomUser();
 
         Response createdUserResponse = userController.addUser(targetUser);
         Assert.assertEquals(createdUserResponse.getStatusCode(), 200);
@@ -114,10 +64,10 @@ public class UserTest {
         targetUser.setFirstName(updatedFirstName);
         targetUser.setId(updatedId);
 
-        Response updatedUserResponse = userController.updateUser(targetUsername, targetUser);
+        Response updatedUserResponse = userController.updateUser(targetUser.getUsername(), targetUser);
         Assert.assertEquals(updatedUserResponse.getStatusCode(), 200);
 
-        Response actualAddedUserResponse = userController.getUser(targetUsername);
+        Response actualAddedUserResponse = userController.getUser(targetUser.getUsername());
         Assert.assertEquals(actualAddedUserResponse.getStatusCode(), 200);
 
         UserModel actualAddedUser = actualAddedUserResponse.as(UserModel.class);
@@ -126,6 +76,20 @@ public class UserTest {
 
     @Test
     public void deleteAddedUser() {
+
+        UserModel targetUser = createRandomUser();
+
+        Response createdUserResponse = userController.addUser(targetUser);
+        Assert.assertEquals(createdUserResponse.getStatusCode(), 200);
+
+        Response deletedUserResponse = userController.deleteUser(targetUser.getUsername());
+        Assert.assertEquals(deletedUserResponse.getStatusCode(), 200);
+
+        Response getDeletedUserResponse = userController.getUser(targetUser.getUsername());
+        Assert.assertEquals(getDeletedUserResponse.getStatusCode(), 404);
+    }
+
+    public UserModel createRandomUser() {
         long targetId = faker.number().randomNumber();
         String targetUsername = faker.name().username();
         String targetFirstName = faker.name().firstName();
@@ -135,7 +99,7 @@ public class UserTest {
         String targetPhone = faker.phoneNumber().phoneNumber();
         long targetUserStatus = faker.number().randomNumber();
 
-        UserModel targetUser = UserModel.builder()
+        return UserModel.builder()
                 .id(targetId)
                 .username(targetUsername)
                 .firstName(targetFirstName)
@@ -144,14 +108,5 @@ public class UserTest {
                 .password(targetPassword)
                 .phone(targetPhone)
                 .userStatus(targetUserStatus).build();
-
-        Response createdUserResponse = userController.addUser(targetUser);
-        Assert.assertEquals(createdUserResponse.getStatusCode(), 200);
-
-        Response deletedUserResponse = userController.deleteUser(targetUsername);
-        Assert.assertEquals(deletedUserResponse.getStatusCode(), 200);
-
-        Response getDeletedUserResponse = userController.getUser(targetUsername);
-        Assert.assertEquals(getDeletedUserResponse.getStatusCode(), 404);
     }
 }

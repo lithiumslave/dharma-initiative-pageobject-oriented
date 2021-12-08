@@ -1,10 +1,13 @@
 package be.models.controllers;
 
 import be.models.models.UserModel;
+import com.github.javafaker.Faker;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
 public class UserController extends BaseController {
+
+    Faker faker = new Faker();
 
     private RequestSpecification userApi() {
         return apiClient("/user");
@@ -35,5 +38,4 @@ public class UserController extends BaseController {
                 .when()
                 .delete("/{username}", username);
     }
-
 }
