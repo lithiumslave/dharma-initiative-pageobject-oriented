@@ -2,7 +2,7 @@ package fe.CitrusPages.CitrusFragments;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import org.junit.Assert;
+import org.testng.Assert;
 
 import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.*;

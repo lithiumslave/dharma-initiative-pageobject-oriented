@@ -4,8 +4,8 @@ import fe.CitrusPages.CitrusFragments.ComparisonFragment;
 import fe.CitrusPages.CitrusFragments.FilterFragment;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import org.junit.Assert;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 
 import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.exist;

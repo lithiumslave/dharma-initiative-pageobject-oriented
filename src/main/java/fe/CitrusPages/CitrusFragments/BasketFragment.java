@@ -2,7 +2,7 @@ package fe.CitrusPages.CitrusFragments;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import junit.framework.AssertionFailedError;
+import org.opentest4j.AssertionFailedError;
 
 import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.*;
